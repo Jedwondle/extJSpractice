@@ -8,9 +8,13 @@ Ext.onReady(function(){
   // console.log("Center", myDiv.center());
   // console.log("Opacity", myDiv.setOpacity(.25));
 
+
+
   console.log(Ext.select('p'));
   // Ext.select('p').highlight();
   Ext.select('p.myClass').highlight();
+
+
   
   var list = Ext.DomHelper.append('myDiv', {
     tag: 'ul', cls: 'my-list', children:
@@ -94,7 +98,57 @@ Ext.onReady(function(){
     },
     scope: {}
   });
-  
+
+  var myParagraph = Ext.get(Ext.select('p.myClass').elements[0]);
+  myParagraph.highlight();
+  myParagraph.on({
+    'click': function() {
+      Ext.MessageBox.show({
+        title: 'Paragraph clicked',
+        msg: myParagraph.dom.innerHTML,
+        width: 500,
+        buttons: Ext.MessageBox.OK,
+        animEl: myParagraph
+      });
+    }
+  });
+
+
+  Ext.create('Ext.data.Store', {
+    storeId: "TestStore",
+    fields: ["company", "price", "change","pctChange","lastChange"],
+    data: {"items": [
+        {"company": "Apple", "price": 29.89, "change": 0.24, "pctChange": 0.81,"lastChange": "9/1 12:00am"},
+        {"company": "Ext", "price": 83.81, "change": 0.72, "pctChange": 0.34,"lastChange": "9/12 12:00am"},
+        {"company": "Google", "price": 71.72, "change": 0.98, "pctChange": 0.03,"lastChange": "10/1 12:00am"},
+        {"company": "Microsoft", "price": 52.55, "change": 0.99, "pctChange": 0.02,"lastChange": "7/4 12:00am"},
+        {"company": "Yahoo!", "price": 29.01, "change": 0.58, "pctChange": 1.47,"lastChange": "5/22 12:00am"}
+      ]}, 
+    proxy: {
+      type: "memory",
+      reader: {
+        type: "json",
+        root: "items"
+      }
+    }
+  });
+
+  Ext.create("Ext.grid.Panel", {
+    title: "Test",
+    store: Ext.data.StoreManager.lookup("TestStore"),
+    columns: [
+      {header: "Company", width: 120, sortable: true, dataIndex: "company"},
+      {header: "Price", width: 90, sortable: true, dataIndex: "price"},
+      {header: "Change", width: 90, sortable: true, dataIndex: "change"},
+      {header: "% Change", width: 90, sortable: true, dataIndex: "pctChange"},
+      {header: "Last Updated", width: 120, sortable: true,
+      renderer: Ext.util.Format.dateRenderer("m/d/Y"),
+      dataIndex: "lastChange"}
+    ],
+    height: 180,
+    width: 512,
+    renderTo: "myDiv"    
+  });
 
   console.log("Congratulations!  You have Ext configured correctly!");
 }); //end onReady
