@@ -1,5 +1,5 @@
 // Base Javascript file for my practice!
-Ext.BLANK_IMAGE_URL = '../../extjs/ext-4.2.1.883/docs/extjs/resources/themes/images/default/tree/s.gif';
+Ext.BLANK_IMAGE_URL = '../ext-4.2.1.883/docs/extjs/resources/themes/images/default/tree/s.gif';
 
 Ext.onReady(function(){
 
